@@ -22,6 +22,11 @@
     <a href="#Frontend">Frontend</a>
     ·
     <a href="#Backend">Backend</a>
+    ·
+    
+<a href="https://youtu.be/v8innySZX-k">Walkthrough</a>
+    
+    
   </p>
 </div>
 
