@@ -153,7 +153,7 @@ Snapshot of Frontend
 <p>
 <h3>
 Snapshot of Backend
-  <h3>Player Match Info Popup</h3>
+  <h3>Data from the Backend</h3>
 <img src="https://user-images.githubusercontent.com/51007043/161138944-a567a2fd-c41a-4b8e-92d3-d03d1765990a.png" alt="Logo"></img>
 
 </h3>
