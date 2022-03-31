@@ -59,6 +59,24 @@ Our Database is created for the enthusiastic cricket lovers who can be cricket f
 For the players a relationship connecting players with their stats regarding the matches that person played along with information about the match stadium is mentioned. The Stats tables consist of runs scored, strike rate, ball faced ,4s,6s,extras, wickets, runs conceded, maiden, overthrown ,catches taken and format associated with a specific match i.e. a player_match_info table consisting of each player record of each match. Then the total stats of each format of the player were calculated using count, sum and avg query.
 </p>
 <p align="right">(<a href="#top">back to top</a>)</p>
+<h3>
+Features:-</h3>
+<ul>
+  <li>
+Authentication:- Email - bcci@cricket.com Password - 12345678
+  </li>
+  <li>
+    
+INSERT 
+  </li>
+    
+  <li>
+
+DELETE
+  </li>
+    
+</ul>
+
 
 ### Built With
 
@@ -82,9 +100,15 @@ Clone The Above Repo in your Local System for frontend.
 
 Run the Following command in the terminal given that node is installed in the system
 
-- npm
-  sh
-  npm install
+
+-   npm install
+-   cd Cricket
+-   npm i
+-   cd ..
+-   cd Backend
+-   npm i
+-   In Cricket Folder run npm start
+-   In Backend Folder run nodemon
 
 <!-- USAGE EXAMPLES -->
 
@@ -156,6 +180,17 @@ Snapshot of Backend
   <h3>Data from the Backend</h3>
 <img src="https://user-images.githubusercontent.com/51007043/161138944-a567a2fd-c41a-4b8e-92d3-d03d1765990a.png" alt="Logo"></img>
 
+  <h3>SQL Table In Backend</h3>
+<img src="https://user-images.githubusercontent.com/51007043/161143642-3ca9065d-dc9e-4c8b-8593-de0acb12025e.png" alt="Logo"></img>
+
+
 </h3>
 </p>
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- Walkthrough -->
+## Walkthrough
+<p>Youtube Video for Walkthrough</p>
+<a href="https://youtu.be/v8innySZX-k">Walkthrough</a>
+
+
