@@ -29,6 +29,47 @@ con.connect(function (err) {
   console.log("Connected!");
 });
 
+app.get("/getPersonInfoByFirstCharc", (req, res) => {
+  const [firstName, lastName] = req.query.character.split(" ");
+  if (firstName.length > 1) {
+    var Query = `use cricket_management_system; SELECT * FROM person WHERE first_name =?`;
+    con.query(Query, [firstName, lastName], (err, rows, field) => {
+      res.send(rows[1]);
+    });
+  } else {
+    console.log(firstName[0], lastName[0]);
+    var Query = `use cricket_management_system; SELECT * FROM person_hash_index WHERE first_name like'${
+      firstName[0] + "%"
+    }'  UNION SELECT * FROM person_hash_index WHERE last_name like '${
+      lastName[0] + "%"
+    }'`;
+
+    con.query(Query, [firstName[0], lastName[0]], async (err, rows, field) => {
+      if (!err) {
+        res.send(rows[1]);
+      } else {
+        res.send("err =>", err);
+      }
+    });
+  }
+});
+
+//* Q4=> get the match_info by the date
+
+app.get("/getMatchInfoByDate", (req, res) => {
+  console.log("Start end Date ", req.query);
+  const { startDate, endDate } = req.query; //{ startdate: '2013-11-30', endDate: '2004-11-30' }
+
+  var Query =
+    "use cricket_management_system; select * from match_info_btree_index where date_on_match_played > ? and date_on_match_played < ?";
+  con.query(Query, [startDate, endDate], (err, rows, field) => {
+    if (!err) {
+      res.send(rows[1]);
+    } else {
+      console.log("err=>", err);
+    }
+  });
+});
 app.get("/getPersonData", (req, res) => {
   console.log(req.query.name);
 

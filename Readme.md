@@ -13,189 +13,181 @@
     <div>Mrityunjay Saraf 18110103</div>
     <div>Sumit Kumar 18110167</div>
     <div>Vaibhav Khandare 18110180</div>
-  </div>
+  </div></div>
   <br/>
-  <p align="center">
-    <br />
-    <a href="#Database">Database</a>
-    ·
-    <a href="#Frontend">Frontend</a>
-    ·
-    <a href="#Backend">Backend</a>
-    ·
-    
-<a href="https://youtu.be/v8innySZX-k">VideoDemo</a>
-    
-    
-  </p>
-</div>
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
+<br/>
+<br/>
+Q1
+<br/>
+CREATE TABLE person_hash_index AS SELECT * FROM person; <br/>
+create index player_index using hash on person_hash_index(first_name(10)); <br/>
+set profiling =1;  <br/>
+(SELECT * FROM person WHERE first_name like 'Y%' <br/>
+UNION <br/>
+SELECT * FROM person WHERE last_name like 'S%'); <br/>
+-- optimized query <br/>
+(SELECT * FROM person_hash_index WHERE first_name like 'Y%' <br/>
+UNION <br/>
+SELECT * FROM person_hash_index WHERE last_name like 'S%'); <br/>
+show profiles; <br/>
+ <br/>
+explain (SELECT * FROM person_hash_index WHERE first_name like 'Y%' <br/>
+UNION <br/>
+SELECT * FROM person_hash_index WHERE last_name like 'S%');
+ <br/>
+ ![87baa5e8-9754-4dfc-864e-6fb689e47d48](https://user-images.githubusercontent.com/94688048/163728647-2a57fcc4-9e6d-4be1-b31e-1409312e3022.jpg)<br/>
+![23dc20c7-6acc-46de-b234-d776d3f434b9](https://user-images.githubusercontent.com/94688048/163728648-9bfb6461-156e-47ec-9d2f-8a3deb9a9a6d.jpg)
+ <br/>
+ 
+Q2 <br/>
+set profiling =1;  <br/>
+SELECT * FROM person WHERE first_name like 'R%'; <br/>
+-- optimized query <br/>
+SELECT * FROM person_hash_index WHERE first_name like 'R%'; <br/>
+show profiles; <br/>
+explain SELECT * FROM person_hash_index WHERE first_name like 'R%'; <br/>
+ <br/>![d1fbebca-8291-4733-bb69-623773c64635](https://user-images.githubusercontent.com/94688048/163728661-f4fe20bd-8987-4b80-9e95-035fc28ef3ea.jpg )<br/>
+![44f6f71d-bb7f-486c-9daf-7fd1de3e186f](https://user-images.githubusercontent.com/94688048/163728667-d45cdfd7-a2db-4c11-84c9-18f2246b0c95.jpg)
+<br/>
+Q3 <br/>
+CREATE TABLE player_id_hash_index AS SELECT * FROM person; <br/>
+create unique index player_id_index using hash on player_id_hash_index(id); <br/>
+ALTER TABLE player_id_hash_index <br/>
+modify id tinyint; <br/>
+set profiling =1; <br/>
+select * from person where id = 1; <br/>
+-- optimized query <br/>
+select * from player_id_hash_index where id =1; <br/>
+show profiles; <br/>
+explain select * from player_id_hash_index where id =1; <br/>
+ ![a8ede516-d812-48e0-be33-f05742a07dc9](https://user-images.githubusercontent.com/94688048/163728677-f7b1aa89-4aa0-4122-b088-e6844d0ee650.jpg) <br/>
+![25a69c02-9d3c-4fc4-8b18-72079b35ef26](https://user-images.githubusercontent.com/94688048/163728682-b3cccfcf-c689-4db7-95e0-f811bbeffa4f.jpg)
 
-<!-- ABOUT THE PROJECT -->
+ <br/>
+Q4 <br/>
+alter table match_info <br/>
+add date_on_match_played date; <br/>
+ <br/>
+update match_info set date_on_match_played = '2003-05-20' where match_id =1001; <br/>
+update match_info set date_on_match_played = '2008-01-17' where match_id =1002; <br/>
+update match_info set date_on_match_played = '2011-10-04' where match_id =1003; <br/>
+update match_info set date_on_match_played = '2013-06-26' where match_id =1004; <br/>
+update match_info set date_on_match_played = '2014-11-30' where match_id =1005; <br/>
+ <br/>
+CREATE TABLE match_info_btree_index AS SELECT * FROM match_info; <br/>
+create unique index date_index using btree on  <br/>match_info_btree_index(date_on_match_played); <br/>
+set profiling =1; <br/>
+(select * from match_info where date_on_match_played > '2013-11-30'  <br/>
+union  <br/>
+select * from match_info where date_on_match_played < '2004-11-30'); <br/>
+-- optimized query <br/>
+(select * from match_info_btree_index where date_on_match_played > '2013-11-30' <br/>
+union <br/>
+select * from match_info_btree_index where date_on_match_played < '2004-11-30'); <br/>
+show profiles; <br/>
+explain (select * from match_info_btree_index where date_on_match_played > '2013-11-30' <br/>
+union <br/>
+select * from match_info_btree_index where date_on_match_played < '2004-11-30'); <br/>
+![5e3ceda4-551d-42eb-81ed-02feec6c4585](https://user-images.githubusercontent.com/94688048/163728270-05872617-bfa1-499a-b13f-d2627ec5b741.jpg)<br/>
+![6671776e-499a-4921-b7a7-256f3da2f661](https://user-images.githubusercontent.com/94688048/163728278-5dcfb79c-8818-45c9-bb22-de0f447d32d4.jpg)
+ <br/>
+<br/>
+Q5 <br/>
+CREATE TABLE match_duplicate AS SELECT * FROM match_info; <br/>
+select * from match_duplicate; <br/>
+Update match_duplicate <br/>
+Set india_total_runs = NULL where match_id = 1003 ; <br/>
+Select Count(*) from match_duplicate where india_total_runs = true; <br/>
+ <br/>![90d22df1-799b-44e8-b87f-6d11191425d1](https://user-images.githubusercontent.com/94688048/163728545-3f9b5f1a-141a-4a83-b3b3-07ba17245848.jpg) <br/>
+![0c644d43-4fe0-408a-90b7-c4142bbae43a](https://user-images.githubusercontent.com/94688048/163728691-b3e35c57-cede-452b-87a2-f6473991f804.jpg)
 
-## About The Project
+ <br/>
+ Q6 <br/>
+The Caching has been removed in 8.0 version so the command like  <br/>
+SHOW VARIABLES LIKE 'query_cache_size'; <br/>
+Does not return anything except the null value<br/>
+<img width="122" alt="image" src="https://user-images.githubusercontent.com/94688048/163728845-5ac7bf25-8fd9-47f2-9cd0-1577a36e1270.png">
 
-<p>
-Our Database is created for the enthusiastic cricket lovers who can be cricket fans, cricket match analyst, cricket players and commentators. The database has functions which gives power to the Cricket Data Analyst or user to get all the information of specific player, specific match played in a specific stadium and Player stats according to the cricket format (ODI, Test and T20). The Database is specialized only for the Indian Cricket Team Personals and their Information.
-</p><p>
-For the players a relationship connecting players with their stats regarding the matches that person played along with information about the match stadium is mentioned. The Stats tables consist of runs scored, strike rate, ball faced ,4s,6s,extras, wickets, runs conceded, maiden, overthrown ,catches taken and format associated with a specific match i.e. a player_match_info table consisting of each player record of each match. Then the total stats of each format of the player were calculated using count, sum and avg query.
-</p>
-<p align="right">(<a href="#top">back to top</a>)</p>
-<h3>
-Features:-</h3>
-<ul>
-  <li>
-Authentication:- Email - bcci@cricket.com Password - 12345678
-  </li>
-  <li>
-    
-INSERT 
-  </li>
-    
-  <li>
+and query SHOW VARIABLES LIKE <br/>'have_query_cache'; <br/><img width="141" alt="image" src="https://user-images.githubusercontent.com/94688048/163728867-5d7d70e5-bdbf-4ef1-ac41-e1ae3eeb4157.png">
 
-DELETE
-  </li>
-    
-</ul>
+Returns the NO <br/>
+Although the performance is increased in the Caching value but it has a scalability issue. It cannot scale with high throughput workloads on multicore machines. The scalability may be improved but with caching the performance will be increased for only those queries which hit the cache. While the rest remains the same performance. So it is difficult to improve the predictability of performance. <br/>
+<br/>
+<br/>
+Q7 <br/>
+-- index already created in Q4 <br/>
+set profiling = 1; <br/>
+select _ from match_info natural join venue_info where date_on_match_played = '2008-01-17'; <br/>
+-- optimized query <br/>
+select _ from match_info_btree_index natural join venue_info where date_on_match_played = '2008-01-17'; <br/>
+show profiles; <br/>
+explain select _ from match_info_btree_index natural join venue_info where <br/>date_on_match_played = '2008-01-17';
+<br/>
+![cd959e17-1385-4185-841a-bfbf68984c92](https://user-images.githubusercontent.com/94688048/163728557-b0d148cf-4e4f-4afb-8d08-e80cd91a6b55.jpg)<br/>
+![c6f92f10-12ae-48df-be3d-330ec5c0284d](https://user-images.githubusercontent.com/94688048/163728564-87a10c64-dfc3-4f89-9ab4-3b108a0d7c24.jpg)
+The query runs faster in join as compared to subquery. The sql have main property of join removing it will make it similar to excel sheet. Joining the table helps in using the defined relation. In 2NF or higher normalization, the table is been divided into parts to avoid data redundancy and optimize the process. Since the data will be less in 2NF or more so search time will reduce. <br/>
+Disadvantages <br/>
+With Join the time complexity increases and the spaces for the intermediate table are created. In multiple joins the complexity increases which means for maintaining the table proper care is required for foreign key changing and will have more constraints. Reduces the readability of query <br/>
+-- Q8
+<br/>
+CREATE TABLE person_id_hash_index AS SELECT _ FROM person; <br/>
+create unique index person_id_index using hash on person_id_hash_index(id); <br/>
+CREATE TABLE player_match_info_hash_index AS SELECT _ FROM player_match_info; <br/>
+create index player_match_info_index using hash on <br/> <br/>player_match_info_hash_index(match_id); <br/>
+CREATE TABLE stadium_name_hash_index AS SELECT _ FROM venue_info; <br/>
+create unique index stadium_name_index using hash on <br/> stadium_name_hash_index(stadium_name(20)); <br/>
+set profiling =1; <br/>
+select _ from person where id in (select id from player_match_info where <br/>
+match_id = (select match_id from venue_info where stadium_name = 'Wankhede Stadium' )); <br/>
+-- optimized query <br/>
+select _ from person_id_hash_index where id in (select id from <br/> player_match_info_hash_index where <br/>
+match_id = (select match_id from stadium_name_hash_index where stadium_name = 'Wankhede Stadium' )); <br/>
+show profiles; <br/>
+<br/>
+explain select \* from person_id_hash_index where id in (select id from <br/> player_match_info_hash_index where <br/>
+match_id = (select match_id from stadium_name_hash_index where stadium_name = 'Wankhede Stadium' )); <br/>
+<br/>![2b8be9b3-66dd-451d-9190-b07ae5c08295](https://user-images.githubusercontent.com/94688048/163728585-f5243b17-1d18-460e-9f52-0659a0b19f54.jpg)<br/>
+![144be350-f46b-4a90-aca1-20f0df8b20dd](https://user-images.githubusercontent.com/94688048/163728590-ac384738-cd4d-41e1-9ac3-3e0ad501ef47.jpg)
 
-
-### Built With
-
-The Project uses the below Tech Stack
-
-- [React.js](https://reactjs.org/)
-- [React Bootstrap](https://react-bootstrap.github.io/)
-- [Node.js](https://nodejs.org/en/)
-- [MySQL](https://www.mysql.com/)
-- [Express](https://expressjs.com/)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- GETTING STARTED -->
-
-## Getting Started
-
-Clone The Above Repo in your Local System for frontend.
-
-### Prerequisites
-
-Run the Following command in the terminal given that node is installed in the system
-
-
--   npm install
--   cd Cricket
--   npm i
--   cd ..
--   cd Backend
--   npm i
--   In Cricket Folder run npm start
--   In Backend Folder run nodemon
-
-<!-- USAGE EXAMPLES -->
-
-## Usage
-
-This website can be used to see the statistics of any Indian Cricket player. Also the player data can be added or updated using the website UI in the database. There is a login page for the Admin to get this privileges.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- DATABASE -->
-
-## Database
-
-<h3>
-Snapshot of Database
-</h3>
-
-<h3>Person Table</h3>
-<img src="https://user-images.githubusercontent.com/56597655/161115113-ac1c2f67-b1f8-4a37-8a6f-787fcf75873d.jpg" alt="Logo"></img>
-<h3>Player Info Table</h3>
-<img src="https://user-images.githubusercontent.com/56597655/161115178-9dcc5841-8c25-4df6-944d-bfa8499d34d1.jpg" alt="Logo"></img>
-<h3>Coach Table</h3>
-<img src="https://user-images.githubusercontent.com/56597655/161115193-984acaef-f23c-495c-ac02-c60015cd0f75.jpg" alt="Logo"></img>
-<h3>Match Info Table</h3>
-
-<img src="https://user-images.githubusercontent.com/56597655/161115203-185aebe7-c4ec-4253-a6ee-9c79ccf0f254.jpg" alt="Logo"></img>
-
-<h3>Player Match Info Table</h3>
-
-<img src="https://user-images.githubusercontent.com/56597655/161115527-cbc9b225-ab79-42f1-a0fb-7feb53016712.jpg" alt="Logo"></img>
-
-<h3>Venue Info Table</h3>
-
-<img src="https://user-images.githubusercontent.com/56597655/161115584-c04613fe-55e6-44d2-9a0d-3553957e80f0.jpg" alt="Logo"></img>
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- FRONTEND -->
-
-## Frontend
-
-<p>
-<h3>
-Snapshot of Frontend
-</h3>
-</p>
-<h3>Login Page</h3>
-<img src="https://user-images.githubusercontent.com/56597655/161120390-0bd58bcc-6e2b-4538-860a-3a20bc95ff29.png" alt="Logo"></img>
-<h3>Admin Panel</h3>
-<img src="https://user-images.githubusercontent.com/56597655/161122465-a406608c-6114-4117-b36d-dffa253fd9fe.png" alt="Logo"></img>
-<h3>Add Person Popup</h3>
-<img src="https://user-images.githubusercontent.com/56597655/161122815-2d46ed8c-f4c0-456d-a995-b6851ccdb9ee.png" alt="Logo"></img>
-<h3>Admin Panel</h3>
-<img src="https://user-images.githubusercontent.com/56597655/161123099-0837e522-41fe-4386-8ae2-c16abbc76014.png" alt="Logo"></img>
-<h3>Match Info Popup</h3>
-<img src="https://user-images.githubusercontent.com/56597655/161123255-82510c55-f9bb-4c1f-9fbf-274e04e1ef50.png" alt="Logo"></img>
-<h3>Player Match Info Popup</h3>
-<img src="https://user-images.githubusercontent.com/56597655/161123351-fe21de6f-6974-4923-ae03-d98030f7e248.png" alt="Logo"></img>
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- Backend -->
-
-## Backend
-
-<p>
-<h3>
-Snapshot of Backend
-  <h3>Data from the Backend</h3>
-<img src="https://user-images.githubusercontent.com/51007043/161138944-a567a2fd-c41a-4b8e-92d3-d03d1765990a.png" alt="Logo"></img>
-
-  <h3>SQL Table In Backend</h3>
-<img src="https://user-images.githubusercontent.com/51007043/161143642-3ca9065d-dc9e-4c8b-8593-de0acb12025e.png" alt="Logo"></img>
-
-
-</h3>
-</p>
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- Walkthrough -->
-## Walkthrough
-<p>Youtube Video for Walkthrough</p>
-<a href="https://youtu.be/v8innySZX-k">Walkthrough</a>
-
-
+ <table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Roll No</th>
+<th>Contribution %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aman</td>
+<td>18110014</td>
+<td>16.6</td>
+</tr>
+<tr>
+<td>Bhanu Pratap Singh</td>
+<td>18110034</td>
+<td>16.6</td>
+</tr>
+   <tr>
+<td>Lovepreet Singh</td>
+<td>18110094</td>
+<td>16.6</td>
+</tr>
+    <tr>
+<td>Mrityunjay Saraf</td>
+<td>18110103</td>
+<td>16.6</td>
+</tr>
+    <tr>
+<td>Sumit Kumar</td>
+<td>18110167</td>
+<td>16.6</td>
+</tr>
+    <tr>
+<td>Vaibhav Dilip Khandare</td>
+<td>18110180</td>
+<td>16.6</td>
+</tr>
+</tbody>
+</table>

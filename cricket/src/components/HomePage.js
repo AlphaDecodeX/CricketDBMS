@@ -6,6 +6,9 @@ import axios from "./Axios.js";
 
 const HomePage = () => {
   const [name, setName] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [character, setChracter] = useState("");
   const [flag, setFlag] = useState(false);
   const [matchId, setMatchId] = useState();
   const [matchInfo, setMatchInfo] = useState();
@@ -42,9 +45,21 @@ const HomePage = () => {
     setName(e.target.value);
   };
 
+  const nameChracterChangeHandler = (e) => {
+    setChracter(e.target.value);
+  };
+
   useEffect(() => {
     console.log(playerData);
   }, [playerData]);
+
+  const fromDateChangeHandler = (e) => {
+    setFromDate(e.target.value);
+  };
+
+  const toDateChangeHandler = (e) => {
+    setToDate(e.target.value);
+  };
 
   const idChangeHandler = (e) => {
     setMatchId(e.target.value);
@@ -59,6 +74,38 @@ const HomePage = () => {
     data
       .then((res) => {
         setMatchInfo(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const uploadByChracter = (e) => {
+    e.preventDefault();
+    console.log("Sending Chracter is ", character);
+    console.log();
+    const data = axios.get("http://localhost:5001/getPersonInfoByFirstCharc", {
+      params: { character: character },
+    });
+    data
+      .then((res) => {
+        setPlayerData(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const uploadDate = (e) => {
+    e.preventDefault();
+    console.log("Sending Date is ", character);
+    console.log();
+    const data = axios.get("http://localhost:5001/getMatchInfoByDate", {
+      params: { startDate: fromDate, endDate: toDate },
+    });
+    data
+      .then((res) => {
+        setPlayerData(res.data);
       })
       .catch((e) => {
         console.log(e);
@@ -91,19 +138,11 @@ const HomePage = () => {
       <div>
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>player Name</Form.Label>
+            <Form.Label>Player Name</Form.Label>
             <Form.Control
               type="text"
               placeholder="Player name"
               onChange={nameChangeHandler}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Match ID</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="Match ID"
-              onChange={idChangeHandler}
             />
           </Form.Group>
 
@@ -113,9 +152,56 @@ const HomePage = () => {
           <br></br>
           <br></br>
 
-          <Button variant="primary" type="submit" onClick={getMatchData}>
-            Get Match Data;
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Enter Chracter of First Name or Last Name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Character"
+              onChange={nameChracterChangeHandler}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit" onClick={uploadByChracter}>
+            Search By Chracter Provided
           </Button>
+          <br></br>
+          <br></br>
+
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>From Date</Form.Label>
+            <Form.Control
+              type="date"
+              placeholder="Date"
+              onChange={fromDateChangeHandler}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>To Date</Form.Label>
+            <Form.Control
+              type="date"
+              placeholder="Date"
+              onChange={toDateChangeHandler}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit" onClick={uploadDate}>
+            Get Match Info in a Date Range
+          </Button>
+          <br></br>
+          <br></br>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Match ID</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Match ID"
+              onChange={idChangeHandler}
+            />
+          </Form.Group>
+
+          <Button variant="primary" type="submit" onClick={getMatchData}>
+            Get Match Data
+          </Button>
+          <br></br>
+          <br></br>
         </Form>
       </div>
       <br />
@@ -133,6 +219,7 @@ const HomePage = () => {
                       Indian Cricket Team {playerData.p_role}
                     </Card.Text>
                     <Card.Text>{playerData.format}</Card.Text>
+                    <Card.Text>{playerData.opponent_team}</Card.Text>
                     {/* <Button
                       onClick={() => {
                         setPlayerInfo(!playerInfo);
