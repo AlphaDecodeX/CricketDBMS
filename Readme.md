@@ -15,8 +15,60 @@
     <div>Vaibhav Khandare 18110180</div>
   </div></div>
   <br/>
+  <p align="center">
+    <br />
+    <a href="https://www.youtube.com/watch?v=aRjBTKSMe4c">VideoDemo</a>
+    
+  </p>
 
 <br/>
+### Built With
+
+The Project uses the below Tech Stack
+
+* [React.js](https://reactjs.org/)
+* [React Bootstrap](https://react-bootstrap.github.io/)
+* [Node.js](https://nodejs.org/en/)
+* [MySQL](https://www.mysql.com/)
+* [Express](https://expressjs.com/)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+Clone The Above Repo in your Local System.
+
+### Note:-
+
+- Go to SQL client Terminal
+- mysql -u [username] -p
+- src [exact-path-of-dump-file]
+
+Name of dump file - DB_A8.sql
+
+
+### Prerequisites
+
+Run the Following command in the terminal given that node is installed in the system
+
+
+-   npm install
+-   cd cricket
+-   npm install
+-   cd ..
+-   cd Backend
+-   npm install
+-   In Cricket Folder run npm start
+-   In Backend Folder run nodemon
+  
+
+
+
+
+
 <br/>
 Q1
 <br/>
