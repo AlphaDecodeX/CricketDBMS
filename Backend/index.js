@@ -20,7 +20,7 @@ app.use(cors({ credentials: true, origin: true }));
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "password",
+  password: "12345678",
   multipleStatements: true,
 });
 
@@ -39,8 +39,9 @@ app.get("/getPersonData", (req, res) => {
     const result = [];
     if (!err) {
       rows[1].map((e) => {
-        var category = e.category;
+        var category = e["Category"];
         console.log("category is", category);
+        console.log("e is", e);
         var id = e.id;
         console.log("id is=>", e.id);
 

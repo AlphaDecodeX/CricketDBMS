@@ -108,13 +108,13 @@ const HomePage = () => {
           </Form.Group>
 
           <Button variant="primary" type="submit" onClick={submitFormHandler}>
-            get player data
+            Get Player Data
           </Button>
           <br></br>
           <br></br>
 
           <Button variant="primary" type="submit" onClick={getMatchData}>
-            get match data;
+            Get Match Data;
           </Button>
         </Form>
       </div>
