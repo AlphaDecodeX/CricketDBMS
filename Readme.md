@@ -139,7 +139,7 @@ explain select * from match\*info_btree_index natural join venue_info where <br/
 
  <img alt="image" src="https://user-images.githubusercontent.com/94688048/163728557-b0d148cf-4e4f-4afb-8d08-e80cd91a6b55.jpg">
 
-![cd959e17-1385-4185-841a-bfbf68984c92]()<br/>
+<br/>
 
 The query runs faster in join as compared to subquery. The sql have main property of join removing it will make it similar to excel sheet. Joining the table helps in using the defined relation. In 2NF or higher normalization, the table is been divided into parts to avoid data redundancy and optimize the process. Since the data will be less in 2NF or more so search time will reduce. <br/>
 Disadvantages <br/>
